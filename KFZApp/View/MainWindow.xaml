@@ -1,0 +1,81 @@
+﻿<Window x:Class="KFZApp.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KFZApp"
+        mc:Ignorable="d"
+        Title="KFZApp" Height="450" Width="800"
+        ResizeMode="CanMinimize"
+        Background="{DynamicResource Background}">
+
+    <StackPanel Name="Base" Margin="10" Orientation="Horizontal" Width="Auto">
+
+        <StackPanel x:Name="Overview" Width="Auto" MinWidth="100" Margin="0,0,0,0">
+            <StackPanel x:Name="OverviewUtils">
+                <StackPanel x:Name="Filter" Margin="0,10,0,20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label Content="Kennzeichen suchen" Foreground="{DynamicResource TextColor}"/>
+                            <TextBox MinWidth="235" Width="Auto" Margin="45 0 0 0" Height="20" Text="{Binding Path=KennzeichenFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label Content="Fahrgestellnummer suchen" Foreground="{DynamicResource TextColor}"/>
+                            <TextBox MinWidth="235" Margin="10 0 0 0" Height="20" Text="{Binding Path=FahrgestellNrFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="Data" Height="275">
+                <DataGrid ItemsSource="{Binding Path=KFZList}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding Path=SelectedKFZ}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" />
+                        <DataGridTextColumn Header="Typ" Binding="{Binding Path=Typ}" />
+                        <DataGridTextColumn Header="Fahrgestellnummer" Binding="{Binding Path=FahrgestellNR}" />
+                        <DataGridTextColumn Header="Kennzeichen" Binding="{Binding Path=Kennzeichen}" />
+                        <DataGridTextColumn Header="Leistung" Binding="{Binding Path=Leistung}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <Button Content="Laden"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Width="75" Height="20"
+                    Command="{Binding Path=GetKFZsCommand}"/>
+        </StackPanel>
+
+        <Line X1="0" Y1="0" 
+              X2="0" Y2="400"
+              Margin="5,0,5,0"
+              x:Name="Separator"
+              StrokeThickness="2"
+              Stroke="{DynamicResource TextColor}"/>
+
+        <StackPanel x:Name="Detail" Width="Auto" MinWidth="100" Margin="0,0,10,0">
+            <StackPanel Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal" Width="350" Height="350">
+                    <StackPanel x:Name="Labels" Margin="0,-5,0,0">
+                        <Label Foreground="{DynamicResource TextColor}" Content="Fahrgestellnummer:"/>
+                        <Label Foreground="{DynamicResource TextColor}" Content="Kennzeichen:"/>
+                        <Label Foreground="{DynamicResource TextColor}" Content="Leistung:"/>
+                        <Label Foreground="{DynamicResource TextColor}" Content="Typ:"/>
+                    </StackPanel>
+                    <StackPanel x:Name="Content" Width="230" Margin="0,0,5,0">
+                        <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.FahrgestellNR, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Kennzeichen, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Leistung, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Typ, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="DetailUtils" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                <Button Margin="0,0,10,0" Width="75" Content="Hinzufügen" Command="{Binding Path=AddCommand}"/>
+                <Button Margin="0,0,10,0" Width="75" HorizontalAlignment="Right" Content="Speichern" Command="{Binding Path=SaveCommand}"/>
+                <Button Margin="0,0,0,0" Width="75" HorizontalAlignment="Right" Content="Löschen" Command="{Binding Path=DeleteCommand}"/>
+            </StackPanel>
+        </StackPanel>
+
+    </StackPanel>
+
+</Window>
