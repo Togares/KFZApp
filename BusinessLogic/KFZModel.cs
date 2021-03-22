@@ -2,6 +2,8 @@
 using CommonTypes;
 using System.Collections.Generic;
 using BusinessLogic.Events;
+using DataAccess.DatabaseContext;
+using DataAccess.EntityManager;
 
 namespace BusinessLogic
 {
@@ -9,32 +11,30 @@ namespace BusinessLogic
     {
         public KFZModel()
         {
-            _KFZTable = new TableKFZ();
+            
         }
 
-        private TableKFZ _KFZTable;
-
+        private KFZManager _Manager = new KFZManager();
         public event EntitiesLoadedEventHandler EntitiesLoaded;
 
         public void GetAll()
         {
-            var result = _KFZTable.GetData();
-            if(EntitiesLoaded != null) EntitiesLoaded(result);
+            if(EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.Load());
         }
 
         public void Delete(IEntity entity)
         {
-            _KFZTable.Delete(entity);
+            
         }
 
         public void Save(IEntity entity)
         {
-            _KFZTable.Save(entity);
+                       
         }
 
         public void Update(IEntity entity)
         {
-            _KFZTable.Update(entity);
+           
         }
 
         public bool Validate(IEntity entity)

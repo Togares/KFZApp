@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace CommonTypes
 {
     public class KFZ : IEntity
@@ -8,6 +10,7 @@ namespace CommonTypes
 
         }
 
+        [Key]
         public int ID { get; set; }
         public string Typ { get; set; }
         public string FahrgestellNR { get; set; }
