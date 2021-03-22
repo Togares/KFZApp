@@ -106,6 +106,7 @@ namespace KFZApp.ViewModel
             {
                 Model.Save(SelectedKFZ.Entity);
                 KFZList.Add(SelectedKFZ);
+                SelectedKFZ.IsNew = false;
             }
             else
                 Model.Update(SelectedKFZ.Entity);

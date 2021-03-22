@@ -39,8 +39,8 @@ namespace DataAccess.EntityManager
             {
                 try
                 {
-                    context.Fahrzeuge.Remove((KFZ)entity);
                     context.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
+                    context.Fahrzeuge.Remove((KFZ)entity);
                     context.SaveChanges();
                 }
                 catch (Exception e)

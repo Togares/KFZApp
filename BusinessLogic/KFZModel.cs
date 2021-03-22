@@ -16,22 +16,22 @@ namespace BusinessLogic
 
         public void GetAll()
         {
-            if(EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.Load());
+            if (EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.Load());
         }
 
         public void Delete(IEntity entity)
         {
-            
+            _Manager.Delete(entity);
         }
 
         public void Save(IEntity entity)
         {
-                       
+            _Manager.Save(entity);
         }
 
         public void Update(IEntity entity)
         {
-           
+            _Manager.Update(entity);
         }
 
         public bool Validate(IEntity entity)
