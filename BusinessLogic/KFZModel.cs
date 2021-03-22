@@ -1,8 +1,5 @@
-﻿using DataAccess;
-using CommonTypes;
-using System.Collections.Generic;
+﻿using CommonTypes;
 using BusinessLogic.Events;
-using DataAccess.DatabaseContext;
 using DataAccess.EntityManager;
 
 namespace BusinessLogic
@@ -11,7 +8,7 @@ namespace BusinessLogic
     {
         public KFZModel()
         {
-            
+            DataAccess.Connection.MySqlConnection.GetInstance().Connect();
         }
 
         private KFZManager _Manager = new KFZManager();

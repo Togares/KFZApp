@@ -3,6 +3,7 @@ using CommonTypes;
 using System.Linq;
 using DataAccess.DatabaseContext;
 using System.Collections.Generic;
+using DataAccess.Connection;
 
 namespace DataAccess.EntityManager
 {
@@ -12,20 +13,29 @@ namespace DataAccess.EntityManager
 
         public override List<IEntity> Load()
         {
-            using (var context = new KFZContext())
+            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
             {
-                List<IEntity> result = new List<IEntity>();
-                foreach (var item in context.Fahrzeuge)
+                try
                 {
-                    result.Add(item);
+                    List<IEntity> result = new List<IEntity>();
+                    foreach (var item in context.Fahrzeuge)
+                    {
+                        result.Add(item);
+                    }
+                    return result;
                 }
-                return result;
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
+
             }
         }
 
         public override void Delete(IEntity entity)
         {
-            using (var context = new KFZContext())
+            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
             {
                 try
                 {
@@ -43,7 +53,7 @@ namespace DataAccess.EntityManager
 
         public override void Save(IEntity entity)
         {
-            using (var context = new KFZContext())
+            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
             {
                 try
                 {
@@ -60,7 +70,7 @@ namespace DataAccess.EntityManager
 
         public override void Update(IEntity entity)
         {
-            using (var context = new KFZContext())
+            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
             {
                 try
                 {
@@ -83,10 +93,10 @@ namespace DataAccess.EntityManager
 
         public IEntity Find(int id)
         {
-            using (var context = new KFZContext())
+            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
             {
                 return context.Fahrzeuge.Where(x => x.ID == id).First();
             }
-        }       
+        }
     }
 }

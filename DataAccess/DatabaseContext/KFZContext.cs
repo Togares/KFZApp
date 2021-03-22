@@ -1,14 +1,16 @@
 ﻿using CommonTypes;
-using MySql.Data.Entity;
 using System.Data.Entity;
+using MySql.Data.EntityFramework;
 
 namespace DataAccess.DatabaseContext
 {
-    public class KFZContext : DbContext
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    public class KFZContext : ContextBase
     {
-        public KFZContext() : base()
+        public KFZContext(Connection.MySqlConnection connection, bool ownsConnection)
+            : base(connection.GetConnection(), ownsConnection)
         {
-            
+
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -1,5 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
+using MySql.Data.MySqlClient;
 
 namespace DataAccess.Connection
 {
@@ -30,20 +30,25 @@ namespace DataAccess.Connection
 
         #endregion
 
-        // Don't get confused. This is the connection from MySqlConnector.
-        // This class may need refactoring but I am lazy...
+        // Yes. This is a MySqlConnection within a MySqlConnection. MySqlConnectionCeption.
         private MySql.Data.MySqlClient.MySqlConnection _Connection;
 
         private string GetDefaultConnectionString()
         {
             MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+            builder.Server = "localhost";
             builder.Database = "test";
             builder.UserID = "root";
             builder.Password = "";
             builder.Port = 3306;
-            builder.Server = "localhost";
+            builder.SslMode = MySqlSslMode.None;
 
-            return builder.GetConnectionString(true);
+            return builder.ConnectionString;
+        }
+
+        public MySql.Data.MySqlClient.MySqlConnection GetConnection()
+        {
+            return _Connection;
         }
 
         public bool IsConnected { get; set; }
