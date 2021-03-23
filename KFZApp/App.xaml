@@ -10,6 +10,7 @@
                 <ResourceDictionary x:Name="Button" Source="View/Style/Button.xaml" />
                 <ResourceDictionary x:Name="DataGrid" Source="View/Style/DataGrid.xaml" />
                 <ResourceDictionary x:Name="TextBox" Source="View/Style/TextBox.xaml" />
+                <ResourceDictionary x:Name="TextBox" Source="View/Style/Menu.xaml" />
             </ResourceDictionary.MergedDictionaries>            
         </ResourceDictionary>
     </Application.Resources>

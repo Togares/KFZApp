@@ -1,31 +1,44 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Data.Common;
 using System.Data.Entity;
-using MySql.Data.EntityFramework;
-using MySql.Data.MySqlClient;
 
 namespace DataAccess.Connection
 {
-    public class MySqlConnection : IConnection
+    public class PostgreSqlConnection : IConnection
     {
-        // Yes. This is a MySqlConnection within a MySqlConnection. MySqlConnectionCeption.
-        private MySql.Data.MySqlClient.MySqlConnection _Connection;
+        public PostgreSqlConnection()
+        {
+            
+        }
+
+        private class NpgsqlConfiguration : DbConfiguration
+        {
+            public NpgsqlConfiguration() : base()
+            {
+                SetProviderFactory("Npgsql", NpgsqlFactory.Instance);
+            }
+        }
 
         private string GetDefaultConnectionString()
         {
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-            builder.Server = "localhost";
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();
+            builder.Host = "localhost";
             builder.Database = "test";
-            builder.UserID = "root";
-            builder.Password = "";
-            builder.Port = 3306;
-            builder.SslMode = MySqlSslMode.None;
+            builder.Port = 5432;
+            builder.UserName = "test";
+            builder.Password = "test";
+            builder.SslMode = SslMode.Disable;
+            builder.Timeout = 15;
+            builder.CommandTimeout = 15;
 
             return builder.ConnectionString;
         }
 
+        private NpgsqlConnection _Connection;
+
         public bool IsConnected { get; set; }
-        public DbConfiguration Configuration { get; set; } = new MySqlEFConfiguration();
+        public DbConfiguration Configuration { get; set; } = new NpgsqlConfiguration();
 
         public void Connect(string connectionString = null)
         {
@@ -34,7 +47,7 @@ namespace DataAccess.Connection
                 try
                 {
                     connectionString = connectionString == null ? GetDefaultConnectionString() : connectionString;
-                    _Connection = new MySql.Data.MySqlClient.MySqlConnection(connectionString);
+                    _Connection = new NpgsqlConnection(connectionString);
                     _Connection.Open();
                     IsConnected = true;
                 }
@@ -42,6 +55,7 @@ namespace DataAccess.Connection
                 {
                     throw e;
                 }
+
             }
         }
 

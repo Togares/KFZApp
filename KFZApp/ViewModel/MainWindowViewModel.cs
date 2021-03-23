@@ -81,9 +81,14 @@ namespace KFZApp.ViewModel
             Model.GetAll();
         }
 
-        private void OnClose()
+        private void OnConnect()
         {
+            ((KFZModel)Model).OpenConnection();
+        }
 
+        private void OnDisconnect()
+        {
+            ((KFZModel)Model).CloseConnection();
         }
 
         private void OnDelete()
@@ -168,17 +173,31 @@ namespace KFZApp.ViewModel
             }
         }
 
-        private ICommand _CloseCommand;
-        public ICommand CloseCommand
+        private ICommand _ConnectCommand;
+        public ICommand ConnectCommand 
         {
             get
             {
-                if (_CloseCommand == null)
-                    _CloseCommand = new RelayCommand<object>(x =>
+                if (_ConnectCommand == null)
+                    _ConnectCommand = new RelayCommand<object>(x =>
                     {
-                        OnClose();
+                        OnConnect();
                     }, x => true);
-                return _CloseCommand;
+                return _ConnectCommand;
+            }
+        }
+
+        private ICommand _DisconnectCommand;
+        public ICommand DisconnectCommand
+        {
+            get
+            {
+                if (_DisconnectCommand == null)
+                    _DisconnectCommand = new RelayCommand<object>(x =>
+                    {
+                        OnDisconnect();
+                    }, x => true);
+                return _DisconnectCommand;
             }
         }
 

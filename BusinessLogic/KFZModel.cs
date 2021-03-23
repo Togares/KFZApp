@@ -1,5 +1,6 @@
 ﻿using CommonTypes;
 using BusinessLogic.Events;
+using DataAccess.Connection;
 using DataAccess.EntityManager;
 
 namespace BusinessLogic
@@ -8,11 +9,26 @@ namespace BusinessLogic
     {
         public KFZModel()
         {
-            DataAccess.Connection.MySqlConnection.GetInstance().Connect();
+
         }
 
         private KFZManager _Manager = new KFZManager();
         public event EntitiesLoadedEventHandler EntitiesLoaded;
+
+        public void OpenConnection()
+        {
+            DatabaseConnection.GetInstannce().Connect();
+        }
+
+        public void CloseConnection()
+        {
+            DatabaseConnection.GetInstannce().Disconnect();
+        }
+
+        public bool HasConnection()
+        {
+            return DatabaseConnection.GetInstannce().ActualConnection.IsConnected;
+        }
 
         public void GetAll()
         {

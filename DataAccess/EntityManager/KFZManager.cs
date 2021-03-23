@@ -13,7 +13,7 @@ namespace DataAccess.EntityManager
 
         public override List<IEntity> Load()
         {
-            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
             {
                 try
                 {
@@ -26,7 +26,6 @@ namespace DataAccess.EntityManager
                 }
                 catch (Exception e)
                 {
-
                     throw e;
                 }
 
@@ -35,7 +34,7 @@ namespace DataAccess.EntityManager
 
         public override void Delete(IEntity entity)
         {
-            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
             {
                 try
                 {
@@ -53,7 +52,7 @@ namespace DataAccess.EntityManager
 
         public override void Save(IEntity entity)
         {
-            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
             {
                 try
                 {
@@ -70,7 +69,7 @@ namespace DataAccess.EntityManager
 
         public override void Update(IEntity entity)
         {
-            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
             {
                 try
                 {
@@ -93,7 +92,7 @@ namespace DataAccess.EntityManager
 
         public IEntity Find(int id)
         {
-            using (var context = new KFZContext(MySqlConnection.GetInstance(), false))
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
             {
                 return context.Fahrzeuge.Where(x => x.ID == id).First();
             }

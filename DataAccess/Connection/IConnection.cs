@@ -1,4 +1,7 @@
 ﻿
+using System.Data.Common;
+using System.Data.Entity;
+
 namespace DataAccess.Connection
 {
     public interface IConnection
@@ -6,5 +9,7 @@ namespace DataAccess.Connection
         void Connect(string connectionString = null);
         void Disconnect();
         bool IsConnected { get; set; }
+        DbConnection GetConnection();
+        DbConfiguration Configuration { get; set; }
     }
 }
