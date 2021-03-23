@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CommonTypes
 {
@@ -12,7 +11,8 @@ namespace CommonTypes
 
         [Key]
         public int ID { get; set; }
-        public string Typ { get; set; }
+        public int IDTyp { get; set; }
+        public KFZTyp Typ { get; set; }
         public string FahrgestellNR { get; set; }
         public string Kennzeichen { get; set; }
         public int Leistung { get; set; }
@@ -20,7 +20,7 @@ namespace CommonTypes
         public bool Equals(KFZ other)
         {
             return ID == other.ID &&
-                    Typ == other.Typ &&
+                    Typ.Equals(other.Typ) &&
                     FahrgestellNR == other.FahrgestellNR &&
                     Kennzeichen == other.Kennzeichen &&
                     Leistung == other.Leistung;

@@ -3,10 +3,10 @@ using KFZApp.View;
 using BusinessLogic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using KFZApp.ViewModel.EntityWrapper;
 using System.Linq;
 using System.Collections.Generic;
 using CommonTypes;
+using CommonTypes.EntityWrapper;
 
 namespace KFZApp.ViewModel
 {
@@ -23,6 +23,17 @@ namespace KFZApp.ViewModel
         }
 
         #region Properties
+
+        private ObservableCollection<KFZTypViewModel> _AllTypes = new ObservableCollection<KFZTypViewModel>();
+        public ObservableCollection<KFZTypViewModel> AllTypes
+        {
+            get { return _AllTypes; }
+            set
+            {
+                _AllTypes = value;
+                OnPropertyChanged();
+            }
+        }
 
         private ObservableCollection<KFZViewModel> _KFZList = new ObservableCollection<KFZViewModel>();
         public ObservableCollection<KFZViewModel> KFZList
@@ -84,6 +95,7 @@ namespace KFZApp.ViewModel
         private void OnConnect()
         {
             ((KFZModel)Model).OpenConnection();
+            ((KFZModel)Model).LoadTypes();
         }
 
         private void OnDisconnect()
@@ -99,9 +111,22 @@ namespace KFZApp.ViewModel
 
         private void Model_EntitiesLoaded(List<IEntity> entities)
         {
-            foreach (var item in entities)
+            if (entities.Count > 0)
             {
-                KFZList.Add(new KFZViewModel((KFZ)item));
+                if (entities[0] is KFZ)
+                {
+                    foreach (var item in entities)
+                    {
+                        KFZList.Add(new KFZViewModel((KFZ)item));
+                    }
+                }
+                else if (entities[0] is KFZTyp)
+                {
+                    foreach (var item in entities)
+                    {
+                        AllTypes.Add(new KFZTypViewModel((KFZTyp)item));
+                    }
+                }
             }
         }
 
@@ -174,7 +199,7 @@ namespace KFZApp.ViewModel
         }
 
         private ICommand _ConnectCommand;
-        public ICommand ConnectCommand 
+        public ICommand ConnectCommand
         {
             get
             {

@@ -35,6 +35,11 @@ namespace BusinessLogic
             if (EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.Load());
         }
 
+        public void LoadTypes()
+        {
+            if (EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.LoadTypes());
+        }
+
         public void Delete(IEntity entity)
         {
             _Manager.Delete(entity);
@@ -53,7 +58,7 @@ namespace BusinessLogic
         public bool Validate(IEntity entity)
         {
             KFZ casted = (KFZ)entity;
-            return !string.IsNullOrEmpty(casted.Kennzeichen) && !string.IsNullOrEmpty(casted.FahrgestellNR) && !string.IsNullOrEmpty(casted.Typ) && casted.Leistung > 0;
+            return !string.IsNullOrEmpty(casted.Kennzeichen) && !string.IsNullOrEmpty(casted.FahrgestellNR) && !string.IsNullOrEmpty(casted.Typ?.Beschreibung) && casted.Leistung > 0;
         }
     }
 }

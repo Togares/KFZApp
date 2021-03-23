@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityWrapper\KFZTypViewModel.cs" />
     <Compile Include="Entity\KFZTyp.cs" />
     <Compile Include="Utility\BindableBase.cs" />
     <Compile Include="EntityWrapper\KFZViewModel.cs" />

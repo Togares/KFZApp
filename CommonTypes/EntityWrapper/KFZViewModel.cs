@@ -1,16 +1,17 @@
 ﻿using Utility;
-using CommonTypes;
 
-namespace KFZApp.ViewModel.EntityWrapper
+namespace CommonTypes.EntityWrapper
 {
     public class KFZViewModel : BindableBase
     {
         public KFZViewModel(KFZ entity)
         {
             _Entity = entity;
+            _Typ = new KFZTypViewModel(_Entity.Typ);
         }
 
         private KFZ _Entity;
+        private KFZTypViewModel _Typ;
 
         #region EntityProperties
 
@@ -29,12 +30,12 @@ namespace KFZApp.ViewModel.EntityWrapper
             }
         }
 
-        public string Typ
+        public KFZTypViewModel Typ
         {
-            get { return _Entity.Typ; }
+            get { return _Typ; }
             set
             {
-                _Entity.Typ = value;
+                Typ = value;
                 OnPropertyChanged();
             }
         }

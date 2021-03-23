@@ -97,5 +97,25 @@ namespace DataAccess.EntityManager
                 return context.Fahrzeuge.Where(x => x.ID == id).First();
             }
         }
+
+        public List<IEntity> LoadTypes()
+        {
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
+            {
+                try
+                {
+                    List<IEntity> result = new List<IEntity>();
+                    foreach (var item in context.Types)
+                    {
+                        result.Add(item);
+                    }
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
     }
 }

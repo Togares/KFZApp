@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CommonTypes
 {
@@ -13,7 +9,14 @@ namespace CommonTypes
 
         }
 
+        [Key]
         public int ID { get; set; }
         public string Beschreibung { get; set; }
+
+        public bool Equals(KFZTyp other)
+        {
+            return ID == other.ID &&
+                Beschreibung == other.Beschreibung;
+        }
     }
 }

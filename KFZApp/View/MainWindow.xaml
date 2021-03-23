@@ -45,7 +45,7 @@
                     <DataGrid ItemsSource="{Binding Path=KFZList}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding Path=SelectedKFZ}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" />
-                            <DataGridTextColumn Header="Typ" Binding="{Binding Path=Typ}" />
+                            <DataGridTextColumn Header="Typ" Binding="{Binding Path=Typ.Typ.Beschreibung}" />
                             <DataGridTextColumn Header="Fahrgestellnummer" Binding="{Binding Path=FahrgestellNR}" />
                             <DataGridTextColumn Header="Kennzeichen" Binding="{Binding Path=Kennzeichen}" />
                             <DataGridTextColumn Header="Leistung" Binding="{Binding Path=Leistung}" />
@@ -64,7 +64,7 @@
               X2="0" Y2="400"
               Margin="5,0,5,0"
               x:Name="Separator"
-              StrokeThickness="2"
+              StrokeThickness="1"
               Stroke="{DynamicResource TextColor}"/>
 
             <StackPanel x:Name="Detail" Width="Auto" MinWidth="100" Margin="0,0,10,0">
@@ -80,7 +80,9 @@
                             <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.FahrgestellNR, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Kennzeichen, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Leistung, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Typ, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox ItemsSource="{Binding Path=AllTypes, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMemberPath="Typ.Beschreibung"
+                                      SelectedItem="{Binding Path=SelectedItem.Typ, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
