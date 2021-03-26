@@ -1,4 +1,6 @@
-﻿namespace DataAccess.Connection
+﻿using CommonTypes;
+
+namespace DataAccess.Connection
 {
     public class DatabaseConnection
     {
@@ -20,13 +22,7 @@
 
         public IConnection ActualConnection { get; set; }
 
-        public enum DatabaseType
-        {
-            MySql,
-            PostgreSql
-        }
-
-        public DatabaseType Database { get; set; } = DatabaseType.MySql;
+        public DatabaseType Database { get; set; }
 
         public string ConnectionString { get; set; }
 

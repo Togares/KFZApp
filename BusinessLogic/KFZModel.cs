@@ -15,8 +15,9 @@ namespace BusinessLogic
         private KFZManager _Manager = new KFZManager();
         public event EntitiesLoadedEventHandler EntitiesLoaded;
 
-        public void OpenConnection()
+        public void OpenConnection(DatabaseType type)
         {
+            DatabaseConnection.GetInstannce().Database = type;
             DatabaseConnection.GetInstannce().Connect();
         }
 
@@ -40,6 +41,16 @@ namespace BusinessLogic
             if (EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.LoadTypes());
         }
 
+        public KFZTyp GetTyp(int id)
+        {
+            KFZTyp result = null;
+            if (id > 0)
+            {
+                result = _Manager.GetTyp(id);
+            }
+            return result;
+        }
+
         public void Delete(IEntity entity)
         {
             _Manager.Delete(entity);
@@ -58,7 +69,7 @@ namespace BusinessLogic
         public bool Validate(IEntity entity)
         {
             KFZ casted = (KFZ)entity;
-            return !string.IsNullOrEmpty(casted.Kennzeichen) && !string.IsNullOrEmpty(casted.FahrgestellNR) && !string.IsNullOrEmpty(casted.Typ?.Beschreibung) && casted.Leistung > 0;
+            return !string.IsNullOrEmpty(casted.Kennzeichen) && !string.IsNullOrEmpty(casted.FahrgestellNR) && casted.Leistung > 0;
         }
     }
 }

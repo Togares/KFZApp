@@ -1,7 +1,8 @@
-﻿<Application x:Class="KFZApp.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:KFZApp"
+             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="KFZApp.App"
              Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
@@ -10,7 +11,7 @@
                 <ResourceDictionary x:Name="Button" Source="View/Style/Button.xaml" />
                 <ResourceDictionary x:Name="DataGrid" Source="View/Style/DataGrid.xaml" />
                 <ResourceDictionary x:Name="TextBox" Source="View/Style/TextBox.xaml" />
-                <ResourceDictionary x:Name="TextBox" Source="View/Style/Menu.xaml" />
+                <ResourceDictionary x:Name="Menu" Source="View/Style/Menu.xaml" />
             </ResourceDictionary.MergedDictionaries>            
         </ResourceDictionary>
     </Application.Resources>

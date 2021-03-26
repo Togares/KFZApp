@@ -19,7 +19,7 @@ namespace KFZApp.ViewModel
             View.DataContext = this;
             Model.EntitiesLoaded += Model_EntitiesLoaded;
             OnAdd();
-            View.Show();
+            View.Show();            
         }
 
         #region Properties
@@ -81,6 +81,8 @@ namespace KFZApp.ViewModel
             }
         }
 
+        public DatabaseType SelectedDatabaseType { get; set; }
+
         #endregion Properties
 
         #region Callbacks
@@ -94,7 +96,7 @@ namespace KFZApp.ViewModel
 
         private void OnConnect()
         {
-            ((KFZModel)Model).OpenConnection();
+            ((KFZModel)Model).OpenConnection(SelectedDatabaseType);
             ((KFZModel)Model).LoadTypes();
         }
 
@@ -113,10 +115,13 @@ namespace KFZApp.ViewModel
         {
             if (entities.Count > 0)
             {
+                // this is a terrible way of doing this
                 if (entities[0] is KFZ)
                 {
                     foreach (var item in entities)
                     {
+                        var typ = new KFZTypViewModel(((KFZModel)Model).GetTyp((item as KFZ).IDTyp));
+                        (item as KFZ).Typ = typ.Typ;
                         KFZList.Add(new KFZViewModel((KFZ)item));
                     }
                 }
@@ -132,6 +137,7 @@ namespace KFZApp.ViewModel
 
         private void OnSave()
         {
+            SelectedKFZ.Entity.Typ = SelectedKFZ.Typ.Typ;
             if (SelectedKFZ.IsNew)
             {
                 Model.Save(SelectedKFZ.Entity);
@@ -139,7 +145,9 @@ namespace KFZApp.ViewModel
                 SelectedKFZ.IsNew = false;
             }
             else
+            {
                 Model.Update(SelectedKFZ.Entity);
+            }
         }
 
         private void OnAdd()

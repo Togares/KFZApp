@@ -35,7 +35,7 @@ namespace CommonTypes.EntityWrapper
             get { return _Typ; }
             set
             {
-                Typ = value;
+                _Typ = value;
                 OnPropertyChanged();
             }
         }

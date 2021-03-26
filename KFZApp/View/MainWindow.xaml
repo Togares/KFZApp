@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:Behaviour="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:KFZApp" 
+        xmlns:Common="clr-namespace:CommonTypes;assembly=CommonTypes"
         mc:Ignorable="d"
         Title="KFZApp" Height="470" Width="800"
         ResizeMode="CanMinimize"
@@ -14,16 +16,22 @@
             <Behaviour:InvokeCommandAction Command="{Binding Path=LoadedCommand}"/>
         </Behaviour:EventTrigger>
     </Behaviour:Interaction.Triggers>
-    
+
     <StackPanel>
-        
-        <Menu>
-            <MenuItem Header="Verbindung" Foreground="{DynamicResource TextColor}">
-                <MenuItem Header="Verbinden" Template="{DynamicResource MenuItem}" Command="{Binding Path=ConnectCommand}"/>
-                <MenuItem Header="Trennen" Template="{DynamicResource MenuItem}" Command="{Binding Path=DisconnectCommand}"/>
-            </MenuItem>
-        </Menu>
-        
+
+        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+            <StackPanel.Resources>
+                <ObjectDataProvider x:Key="EnumValues" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="Common:DatabaseType"/>
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+            </StackPanel.Resources>
+            <Button Command="{Binding Path=ConnectCommand}" Width="75" Margin="0,0,5,0" Content="Verbinden"/>
+            <ComboBox Width="150" x:Name="ConnectionTypes" ItemsSource="{Binding Source={StaticResource EnumValues}}" 
+                      SelectedItem="{Binding Path=SelectedConnectionType}"/>
+        </StackPanel>
+
         <StackPanel Name="Base" Margin="10" Orientation="Horizontal" Width="Auto">
 
             <StackPanel x:Name="Overview" Width="Auto" MinWidth="100" Margin="0,0,0,0">
@@ -80,9 +88,9 @@
                             <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.FahrgestellNR, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Kennzeichen, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Leistung, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ComboBox ItemsSource="{Binding Path=AllTypes, UpdateSourceTrigger=PropertyChanged}" 
+                            <ComboBox ItemsSource="{Binding Path=AllTypes, UpdateSourceTrigger=PropertyChanged}"
                                       DisplayMemberPath="Typ.Beschreibung"
-                                      SelectedItem="{Binding Path=SelectedItem.Typ, Mode=TwoWay}"/>
+                                      SelectedItem="{Binding Path=SelectedKFZ.Typ, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

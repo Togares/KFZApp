@@ -117,5 +117,13 @@ namespace DataAccess.EntityManager
                 }
             }
         }
+
+        public KFZTyp GetTyp(int id)
+        {
+            using (var context = new KFZContext(DatabaseConnection.GetInstannce().ActualConnection, false))
+            {
+                return context.Types.Where(x => x.ID == id).First();
+            }
+        }
     }
 }
