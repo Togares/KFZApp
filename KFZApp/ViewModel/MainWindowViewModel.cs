@@ -19,7 +19,7 @@ namespace KFZApp.ViewModel
             View.DataContext = this;
             Model.EntitiesLoaded += Model_EntitiesLoaded;
             OnAdd();
-            View.Show();            
+            View.Show();
         }
 
         #region Properties
@@ -127,13 +127,11 @@ namespace KFZApp.ViewModel
                 }
                 else if (entities[0] is KFZTyp)
                 {
+                    AllTypes.Clear();
                     foreach (var item in entities)
                     {
                         KFZTypViewModel typ = new KFZTypViewModel((KFZTyp)item);
-                        if(!AllTypes.Contains(typ))
-                        {
-                            AllTypes.Add(typ);
-                        }
+                        AllTypes.Add(typ);
                     }
                 }
             }
