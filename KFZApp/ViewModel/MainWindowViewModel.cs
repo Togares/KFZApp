@@ -81,7 +81,7 @@ namespace KFZApp.ViewModel
             }
         }
 
-        public DatabaseType SelectedDatabaseType { get; set; }
+        public DatabaseType SelectedConnectionType { get; set; } = DatabaseType.MySql;
 
         #endregion Properties
 
@@ -96,7 +96,7 @@ namespace KFZApp.ViewModel
 
         private void OnConnect()
         {
-            ((KFZModel)Model).OpenConnection(SelectedDatabaseType);
+            ((KFZModel)Model).OpenConnection(SelectedConnectionType);
             ((KFZModel)Model).LoadTypes();
         }
 
@@ -129,7 +129,11 @@ namespace KFZApp.ViewModel
                 {
                     foreach (var item in entities)
                     {
-                        AllTypes.Add(new KFZTypViewModel((KFZTyp)item));
+                        KFZTypViewModel typ = new KFZTypViewModel((KFZTyp)item);
+                        if(!AllTypes.Contains(typ))
+                        {
+                            AllTypes.Add(typ);
+                        }
                     }
                 }
             }

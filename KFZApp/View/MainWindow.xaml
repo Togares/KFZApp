@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:KFZApp" 
         xmlns:Common="clr-namespace:CommonTypes;assembly=CommonTypes"
         mc:Ignorable="d"
-        Title="KFZApp" Height="470" Width="800"
+        Title="KFZApp" Height="480" Width="800"
         ResizeMode="CanMinimize"
         Background="{DynamicResource Background}">
     <Behaviour:Interaction.Triggers>
@@ -19,7 +19,7 @@
 
     <StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
             <StackPanel.Resources>
                 <ObjectDataProvider x:Key="EnumValues" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
                     <ObjectDataProvider.MethodParameters>
@@ -28,8 +28,8 @@
                 </ObjectDataProvider>
             </StackPanel.Resources>
             <Button Command="{Binding Path=ConnectCommand}" Width="75" Margin="0,0,5,0" Content="Verbinden"/>
-            <ComboBox Width="150" x:Name="ConnectionTypes" ItemsSource="{Binding Source={StaticResource EnumValues}}" 
-                      SelectedItem="{Binding Path=SelectedConnectionType}"/>
+            <ComboBox Width="150" x:Name="ConnectionTypes" ItemsSource="{Binding Source={StaticResource EnumValues}}"
+                      SelectedItem="{Binding Path=SelectedConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
         <StackPanel Name="Base" Margin="10" Orientation="Horizontal" Width="Auto">
@@ -69,7 +69,7 @@
             </StackPanel>
 
             <Line X1="0" Y1="0" 
-              X2="0" Y2="400"
+              X2="0" Y2="380"
               Margin="5,0,5,0"
               x:Name="Separator"
               StrokeThickness="1"
