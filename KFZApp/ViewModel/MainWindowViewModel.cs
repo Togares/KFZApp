@@ -81,6 +81,18 @@ namespace KFZApp.ViewModel
             }
         }
 
+        private KFZTypViewModel _TypFilter = null;
+        public KFZTypViewModel TypFilter 
+        {
+            get => _TypFilter;
+            set
+            {
+                _TypFilter = value;
+                OnPropertyChanged();
+                Filter();
+            }
+        }
+
         public DatabaseType SelectedConnectionType { get; set; } = DatabaseType.MySql;
 
         #endregion Properties
@@ -139,7 +151,7 @@ namespace KFZApp.ViewModel
 
         private void OnSave()
         {
-            SelectedKFZ.Entity.Typ = SelectedKFZ.Typ.Typ;
+            SelectedKFZ.Entity.IDTyp = SelectedKFZ.Typ.Typ.ID;
             if (SelectedKFZ.IsNew)
             {
                 Model.Save(SelectedKFZ.Entity);
@@ -159,13 +171,7 @@ namespace KFZApp.ViewModel
         }
 
         private void Filter()
-        {
-            if (string.IsNullOrEmpty(KennzeichenFilter) && string.IsNullOrEmpty(FahrgestellNrFilter))
-            {
-                OnGetKFZs();
-                return;
-            }
-
+        {            
             ObservableCollection<KFZViewModel> filtered = new ObservableCollection<KFZViewModel>();
 
             // Kennzeichen Filter 
@@ -187,7 +193,25 @@ namespace KFZApp.ViewModel
                         filtered.Add(item);
                 }
             }
+
+            // Typ Filter
+            if(TypFilter != null)
+            {
+                foreach (var item in KFZList.Where(x => x.Typ.Typ.Beschreibung.Equals(TypFilter.Typ.Beschreibung)).ToList())
+                {
+                    if (!filtered.Contains(item))
+                        filtered.Add(item);
+                }
+            }
+
             KFZList = filtered;
+        }
+
+        private void RemoveFilter()
+        {
+            KennzeichenFilter = FahrgestellNrFilter = string.Empty;
+            TypFilter = null;
+            OnGetKFZs();
         }
 
         #endregion Callbacks
@@ -275,6 +299,20 @@ namespace KFZApp.ViewModel
                         OnAdd();
                     }, x => Model != null);
                 return _AddCommand;
+            }
+        }
+
+        private ICommand _RemoveFilterCommand;
+        public ICommand RemoveFilterCommand 
+        {
+            get
+            {
+                if (_RemoveFilterCommand == null)
+                    _RemoveFilterCommand = new RelayCommand<object>(x =>
+                    {
+                        RemoveFilter();
+                    }, x => true);
+                return _RemoveFilterCommand;
             }
         }
 

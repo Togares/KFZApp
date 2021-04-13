@@ -10,11 +10,6 @@
         mc:Ignorable="d"
         Title="KFZApp" Height="480" Width="800"
         Background="{DynamicResource Background}">
-    <Behaviour:Interaction.Triggers>
-        <Behaviour:EventTrigger EventName="Loaded">
-            <Behaviour:InvokeCommandAction Command="{Binding Path=LoadedCommand}"/>
-        </Behaviour:EventTrigger>
-    </Behaviour:Interaction.Triggers>
     <Viewbox>
         <StackPanel>
 
@@ -28,7 +23,7 @@
                 </StackPanel.Resources>
                 <Button Command="{Binding Path=ConnectCommand}" Width="75" Margin="0,0,5,0" Content="Verbinden"/>
                 <ComboBox Width="150" x:Name="ConnectionTypes" ItemsSource="{Binding Source={StaticResource EnumValues}}"
-                      SelectedItem="{Binding Path=SelectedConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                          SelectedItem="{Binding Path=SelectedConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <StackPanel Name="Base" Margin="10" Orientation="Horizontal" Width="Auto">
@@ -45,10 +40,20 @@
                                     <Label Content="Fahrgestellnummer suchen" Foreground="{DynamicResource TextColor}"/>
                                     <TextBox MinWidth="235" Margin="10 0 0 0" Height="20" Text="{Binding Path=FahrgestellNrFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Label Content="Typ suchen" Foreground="{DynamicResource TextColor}"/>
+                                    <ComboBox ItemsSource="{Binding Path=AllTypes, UpdateSourceTrigger=PropertyChanged}"
+                                              MinWidth="235" Margin="94 0 0 0"
+                                              DisplayMemberPath="Typ.Beschreibung"
+                                              SelectedItem="{Binding Path=TypFilter, Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Button Content="Filter entfernen" HorizontalAlignment="Left" Width="100" Command="{Binding Path=RemoveFilterCommand}"/>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel x:Name="Data" Height="275">
+                    <StackPanel x:Name="Data" Height="225">
                         <DataGrid ItemsSource="{Binding Path=KFZList}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding Path=SelectedKFZ}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" />
@@ -60,11 +65,11 @@
                         </DataGrid>
                     </StackPanel>
                     <Button Content="Laden"
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Width="75" Height="20"
-                    Command="{Binding Path=GetKFZsCommand}"/>
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Width="75" Height="20"
+                            Command="{Binding Path=GetKFZsCommand}"/>
                 </StackPanel>
 
                 <Line X1="0" Y1="0" 
@@ -88,8 +93,8 @@
                                 <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Kennzeichen, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Leistung, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ComboBox ItemsSource="{Binding Path=AllTypes, UpdateSourceTrigger=PropertyChanged}"
-                                      DisplayMemberPath="Typ.Beschreibung"
-                                      SelectedItem="{Binding Path=SelectedKFZ.Typ, Mode=TwoWay}"/>
+                                          DisplayMemberPath="Typ.Beschreibung"
+                                          SelectedItem="{Binding Path=SelectedKFZ.Typ, Mode=TwoWay}"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
