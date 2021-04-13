@@ -171,7 +171,8 @@ namespace KFZApp.ViewModel
         }
 
         private void Filter()
-        {            
+        {
+            OnGetKFZs();
             ObservableCollection<KFZViewModel> filtered = new ObservableCollection<KFZViewModel>();
 
             // Kennzeichen Filter 
