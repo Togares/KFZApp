@@ -73,11 +73,11 @@
                 </StackPanel>
 
                 <Line X1="0" Y1="0" 
-              X2="0" Y2="380"
-              Margin="5,0,5,0"
-              x:Name="Separator"
-              StrokeThickness="1"
-              Stroke="{DynamicResource TextColor}"/>
+                      X2="0" Y2="380"
+                      Margin="5,0,5,0"
+                      x:Name="Separator"
+                      StrokeThickness="1"
+                      Stroke="{DynamicResource TextColor}"/>
 
                 <StackPanel x:Name="Detail" Width="Auto" MinWidth="100" Margin="0,0,10,0">
                     <StackPanel Margin="0,10,0,0">
