@@ -10,6 +10,11 @@ namespace CommonTypes.EntityWrapper
             _Typ = new KFZTypViewModel(_Entity.Typ);
         }
 
+        public KFZViewModel()
+        {
+
+        }
+
         private KFZ _Entity;
         private KFZTypViewModel _Typ;
 

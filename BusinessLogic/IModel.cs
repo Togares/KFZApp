@@ -1,6 +1,5 @@
 ﻿using CommonTypes;
 using BusinessLogic.Events;
-using System.Collections.Generic;
 
 namespace BusinessLogic
 {
@@ -8,7 +7,9 @@ namespace BusinessLogic
     {
         bool Validate(IEntity entity);
         void GetAll();
+        void CheckChanges();
         event EntitiesLoadedEventHandler EntitiesLoaded;
+        event EntitiesLoadedEventHandler CheckChangedEntities;
         void Save(IEntity entity);
         void Delete(IEntity entity);
         void Update(IEntity entity);

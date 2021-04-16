@@ -20,10 +20,10 @@ namespace CommonTypes
         public bool Equals(KFZ other)
         {
             return ID == other.ID &&
-                    Typ.Equals(other.Typ) &&
                     FahrgestellNR == other.FahrgestellNR &&
                     Kennzeichen == other.Kennzeichen &&
-                    Leistung == other.Leistung;
+                    Leistung == other.Leistung &&
+                    ((Typ != null && other.Typ != null) ? Typ.Equals(other.Typ) : false);
         }
     }
 }

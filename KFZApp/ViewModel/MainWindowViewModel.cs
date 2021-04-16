@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using CommonTypes;
 using CommonTypes.EntityWrapper;
+using System.Windows.Threading;
 
 namespace KFZApp.ViewModel
 {
@@ -18,9 +19,19 @@ namespace KFZApp.ViewModel
             Model = model;
             View.DataContext = this;
             Model.EntitiesLoaded += Model_EntitiesLoaded;
+            Model.CheckChangedEntities += Model_CheckChangedEntities;
             OnAdd();
             View.Show();
+            _ReloadDataTimer = new DispatcherTimer();
+            _ReloadDataTimer.Interval = new System.TimeSpan(0, 0, 0, 15, 0);
+            _ReloadDataTimer.Tick += _ReloadDataTimer_Tick;
         }
+
+        #region Fields
+
+        private DispatcherTimer _ReloadDataTimer;
+
+        #endregion Fields
 
         #region Properties
 
@@ -82,7 +93,7 @@ namespace KFZApp.ViewModel
         }
 
         private KFZTypViewModel _TypFilter = null;
-        public KFZTypViewModel TypFilter 
+        public KFZTypViewModel TypFilter
         {
             get => _TypFilter;
             set
@@ -110,10 +121,15 @@ namespace KFZApp.ViewModel
         {
             ((KFZModel)Model).OpenConnection(SelectedConnectionType);
             ((KFZModel)Model).LoadTypes();
+            if (((KFZModel)Model).HasConnection())
+            {
+                _ReloadDataTimer.Start();
+            }
         }
 
         private void OnDisconnect()
         {
+            _ReloadDataTimer.Stop();
             ((KFZModel)Model).CloseConnection();
         }
 
@@ -147,6 +163,62 @@ namespace KFZApp.ViewModel
                     }
                 }
             }
+        }
+
+        private void CheckChanges()
+        {
+            // save selected item to restore later
+            var prevSelection = SelectedKFZ;
+
+            if (KFZList == null) KFZList = new ObservableCollection<KFZViewModel>();
+            if (KFZList?.Count() > 0) KFZList?.Clear();
+            Model.CheckChanges();
+
+            SelectedKFZ = prevSelection;
+        }
+
+        private void Model_CheckChangedEntities(List<IEntity> entities)
+        {
+            var prevSelection = SelectedKFZ;
+
+            // all entities loaded from the event
+            List<KFZViewModel> loadedEntities = new List<KFZViewModel>();
+            foreach (var item in entities)
+            {
+                var typ = new KFZTypViewModel(((KFZModel)Model).GetTyp((item as KFZ).IDTyp));
+                (item as KFZ).Typ = typ.Typ;
+                loadedEntities.Add(new KFZViewModel((KFZ)item));
+            }
+
+            // exclude selected item from updates
+            var allUnselected = KFZList.Where(x => x.Entity != SelectedKFZ.Entity).ToList();
+
+            foreach (var item in loadedEntities)
+            {
+                // add new items 
+                if (!allUnselected.Contains(item))
+                    allUnselected.Add(item);
+
+                // remove deleted items
+                foreach (var deleted in allUnselected.Where(x => !loadedEntities.Contains(x)).ToList())
+                {
+                    allUnselected.Remove(deleted);
+                }
+
+                // update existing items
+                int index = allUnselected.IndexOf(allUnselected.Where(x => x.ID == item.ID && !x.Entity.Equals(item.Entity)).FirstOrDefault());
+                if (index > 0 && index < allUnselected.Count - 1)
+                    allUnselected[index] = item;
+            }
+
+            // upadate list
+            KFZList.Clear();
+            foreach (var item in allUnselected)
+            {
+                KFZList.Add(item);
+            }
+            if (prevSelection != null && prevSelection.ID != 0)
+                KFZList.Add(prevSelection);
         }
 
         private void OnSave()
@@ -196,7 +268,7 @@ namespace KFZApp.ViewModel
             }
 
             // Typ Filter
-            if(TypFilter != null)
+            if (TypFilter != null)
             {
                 foreach (var item in KFZList.Where(x => x.Typ.Typ.Beschreibung.Equals(TypFilter.Typ.Beschreibung)).ToList())
                 {
@@ -213,6 +285,11 @@ namespace KFZApp.ViewModel
             KennzeichenFilter = FahrgestellNrFilter = string.Empty;
             TypFilter = null;
             OnGetKFZs();
+        }
+
+        private void _ReloadDataTimer_Tick(object sender, System.EventArgs e)
+        {
+            CheckChanges();
         }
 
         #endregion Callbacks
@@ -242,7 +319,7 @@ namespace KFZApp.ViewModel
                     _ConnectCommand = new RelayCommand<object>(x =>
                     {
                         OnConnect();
-                    }, x => true);
+                    }, x => !((KFZModel)Model).HasConnection());
                 return _ConnectCommand;
             }
         }
@@ -256,7 +333,7 @@ namespace KFZApp.ViewModel
                     _DisconnectCommand = new RelayCommand<object>(x =>
                     {
                         OnDisconnect();
-                    }, x => true);
+                    }, x => ((KFZModel)Model).HasConnection());
                 return _DisconnectCommand;
             }
         }
@@ -304,7 +381,7 @@ namespace KFZApp.ViewModel
         }
 
         private ICommand _RemoveFilterCommand;
-        public ICommand RemoveFilterCommand 
+        public ICommand RemoveFilterCommand
         {
             get
             {

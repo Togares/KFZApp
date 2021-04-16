@@ -24,6 +24,7 @@
                 <Button Command="{Binding Path=ConnectCommand}" Width="75" Margin="0,0,5,0" Content="Verbinden"/>
                 <ComboBox Width="150" x:Name="ConnectionTypes" ItemsSource="{Binding Source={StaticResource EnumValues}}"
                           SelectedItem="{Binding Path=SelectedConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Command="{Binding Path=DisconnectCommand}" Width="75" Margin="5,0,5,0" Content="Trennen"/>
             </StackPanel>
 
             <StackPanel Name="Base" Margin="10" Orientation="Horizontal" Width="Auto">
@@ -54,7 +55,8 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel x:Name="Data" Height="225">
-                        <DataGrid ItemsSource="{Binding Path=KFZList}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding Path=SelectedKFZ}">
+                        <DataGrid ItemsSource="{Binding Path=KFZList}" AutoGenerateColumns="False" IsReadOnly="True" 
+                                  SelectedItem="{Binding Path=SelectedKFZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" />
                                 <DataGridTextColumn Header="Typ" Binding="{Binding Path=Typ.Typ.Beschreibung}" />
@@ -92,9 +94,10 @@
                                 <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.FahrgestellNR, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Kennzeichen, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Margin="0,0,0,10" Text="{Binding Path=SelectedKFZ.Leistung, UpdateSourceTrigger=PropertyChanged}"/>
-                                <ComboBox ItemsSource="{Binding Path=AllTypes, UpdateSourceTrigger=PropertyChanged}"
+                                <ComboBox ItemsSource="{Binding Path=AllTypes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           DisplayMemberPath="Typ.Beschreibung"
-                                          SelectedItem="{Binding Path=SelectedKFZ.Typ, Mode=TwoWay}"/>
+                                          SelectedItem="{Binding Path=SelectedKFZ.Typ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                </ComboBox>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

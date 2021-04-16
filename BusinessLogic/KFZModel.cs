@@ -14,6 +14,7 @@ namespace BusinessLogic
 
         private KFZManager _Manager = new KFZManager();
         public event EntitiesLoadedEventHandler EntitiesLoaded;
+        public event EntitiesLoadedEventHandler CheckChangedEntities;
 
         public void OpenConnection(DatabaseType type)
         {
@@ -28,12 +29,20 @@ namespace BusinessLogic
 
         public bool HasConnection()
         {
-            return DatabaseConnection.GetInstannce().ActualConnection.IsConnected;
+            bool result = false;
+            if (DatabaseConnection.GetInstannce().ActualConnection != null && DatabaseConnection.GetInstannce().ActualConnection.IsConnected)
+                result = true;
+            return result;
         }
 
         public void GetAll()
         {
             if (EntitiesLoaded != null) EntitiesLoaded.Invoke(_Manager.Load());
+        }
+
+        public void CheckChanges()
+        {
+            if (CheckChangedEntities != null) CheckChangedEntities.Invoke(_Manager.Load());
         }
 
         public void LoadTypes()
