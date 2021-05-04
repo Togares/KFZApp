@@ -168,13 +168,13 @@ namespace KFZApp.ViewModel
         private void CheckChanges()
         {
             // save selected item to restore later
-            var prevSelection = SelectedKFZ;
+            int selectedIndex = KFZList.IndexOf(SelectedKFZ);
 
             if (KFZList == null) KFZList = new ObservableCollection<KFZViewModel>();
             if (KFZList?.Count() > 0) KFZList?.Clear();
             Model.CheckChanges();
 
-            SelectedKFZ = prevSelection;
+            SelectedKFZ = (selectedIndex >= 0 && selectedIndex < KFZList.Count ? KFZList[selectedIndex] : KFZList.First());
         }
 
         private void Model_CheckChangedEntities(List<IEntity> entities)
